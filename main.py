@@ -5,16 +5,18 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    """Root route, return a hello message."""
     return "Hello world!"
 
 @app.route("/headers")
 def get_headers():
+    """Get the headers of the request and return them as text lines."""
     headers = request.headers
     accept = headers["Accept"]
     user_agent = headers["User-Agent"]
     separator = "<br>" if "text/html" in accept else "\n"
-    output = ""
     end_newline = True if "curl" in user_agent else False
+    output = ""
 
     for name, value in headers.items():
         if output:
@@ -29,9 +31,11 @@ def get_headers():
 
 @app.route("/user/<name>")
 def user(name: str):
+    """User root route, return a hello message."""
     return f"Hello {name}"
 
 def main():
+    """Run the flask application if the main module is invoked directly."""
     print("Running from main")
     app.run(
         host="0.0.0.0",
