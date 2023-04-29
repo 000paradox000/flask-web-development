@@ -34,6 +34,12 @@ def user(name: str):
     """User root route, return a hello message."""
     return f"Hello {name}"
 
+@app.route("/url-map")
+def get_url_map():
+    """Get url map."""
+    return str(app.url_map)
+
+
 def main():
     """Run the flask application if the main module is invoked directly."""
     print("Running from main")
