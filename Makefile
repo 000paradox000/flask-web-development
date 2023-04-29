@@ -6,3 +6,9 @@ run-flask:
 
 run-main:
 	python main.py
+
+request-headers-with-curl:
+	curl http://localhost:5000/headers
+
+request-headers-with-httpie:
+	http http://localhost:5000/headers
