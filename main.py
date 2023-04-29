@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -39,6 +40,35 @@ def get_url_map():
     """Get url map."""
     return str(app.url_map)
 
+@app.route("/request")
+def get_request():
+    """Get some request parts."""
+    response = {}
+    keys = [
+        "form",
+        "args",
+        "values",
+        "cookies",
+        "files",
+        "method",
+        "endpoint",
+        "scheme",
+        "is_secure",
+        "host",
+        "path",
+        "full_path",
+        "url",
+        "base_url",
+        "remote_addr",
+    ]
+    for key in keys:
+        response[key] = getattr(request, key)
+
+    response["headers"] = dict(request.headers)
+    response["environ"] = str(request.environ)
+    response["query_string"] = request.query_string.decode("utf-8")
+
+    return jsonify(response)
 
 def main():
     """Run the flask application if the main module is invoked directly."""

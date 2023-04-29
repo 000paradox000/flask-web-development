@@ -12,3 +12,7 @@ request-headers-with-curl:
 
 request-headers-with-httpie:
 	http http://localhost:5000/headers
+
+request-request-with-httpie:
+	http http://localhost:5000/request
+
