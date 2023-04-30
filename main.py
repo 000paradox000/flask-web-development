@@ -7,6 +7,9 @@ import dotenv
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask import make_response
+from flask import redirect
+from flask import url_for
 
 dotenv.load_dotenv()
 app = Flask(__name__)
@@ -85,10 +88,9 @@ def get_temperature():
     month_name = now.strftime("%B")
     date_string = now.strftime("%Y-%m-%d")
     time_string = now.strftime("%H:%M:%S")
-    temperature = ""
 
-    latitude = "4.624335"
-    longitude = "-74.063644"
+    # latitude = "4.624335"
+    # longitude = "-74.063644"
     base_url = "https://api.openweathermap.org/data/2.5/weather"
     api_key = os.environ["OPENWEATHER_API_KEY"]
     query_string = f"appid={api_key}&q=bogota&units=metric"
@@ -105,6 +107,31 @@ def get_temperature():
     }
 
     return jsonify(response)
+
+@app.route("/error-400")
+def get_error_400():
+    """Example of status code 400 BAD REQUEST."""
+    return "<h1>Error 400</h1>", 400
+
+@app.route("/cookies")
+def get_or_create_cookie():
+    """Example of creating or getting a cookie."""
+    key = "internet"
+    value = "casi complejo"
+    response = make_response(f"Cookie created, key={key}, value={value}")
+    response.set_cookie(key, value)
+
+    return "<h1>No Error</h1>", 200
+
+@app.route("/redirect")
+def make_redirect():
+    """Make a redirection."""
+    return redirect(url_for("receive_redirect"))
+
+@app.route("/receive-redirect")
+def receive_redirect():
+    """Response of redirection."""
+    return "Redirect received", 200
 
 def main():
     """Run the flask application if the main module is invoked directly."""

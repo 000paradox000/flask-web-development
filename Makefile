@@ -16,3 +16,8 @@ request-headers-with-httpie:
 request-request-with-httpie:
 	http http://localhost:5000/request
 
+request-redirect-with-httpie:
+	http http://localhost:5000/redirect
+
+request-redirect-follow-with-httpie:
+	http --follow http://localhost:5000/redirect
