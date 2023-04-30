@@ -10,6 +10,7 @@ from flask import jsonify
 from flask import make_response
 from flask import redirect
 from flask import url_for
+from flask import abort
 
 dotenv.load_dotenv()
 app = Flask(__name__)
@@ -79,7 +80,6 @@ def get_request():
 
     return jsonify(response)
 
-
 @app.route("/temperature")
 def get_temperature():
     """Get the temperature of Bogotá."""
@@ -132,6 +132,14 @@ def make_redirect():
 def receive_redirect():
     """Response of redirection."""
     return "Redirect received", 200
+
+@app.route("/abort")
+def abort_execution():
+    """Example of aborting executions."""
+    print("Before abort")
+    abort(404)
+    print("After abort")
+    return "Execution not aborted", 200
 
 def main():
     """Run the flask application if the main module is invoked directly."""
