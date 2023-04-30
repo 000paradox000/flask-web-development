@@ -1,7 +1,14 @@
+import datetime
+import os
+
+import requests
+import dotenv
+
 from flask import Flask
 from flask import request
 from flask import jsonify
 
+dotenv.load_dotenv()
 app = Flask(__name__)
 
 @app.route("/")
@@ -65,8 +72,37 @@ def get_request():
         response[key] = getattr(request, key)
 
     response["headers"] = dict(request.headers)
-    response["environ"] = str(request.environ)
     response["query_string"] = request.query_string.decode("utf-8")
+
+    return jsonify(response)
+
+
+@app.route("/temperature")
+def get_temperature():
+    """Get the temperature of Bogotá."""
+    now = datetime.datetime.now()
+    day_name = now.strftime("%A")
+    month_name = now.strftime("%B")
+    date_string = now.strftime("%Y-%m-%d")
+    time_string = now.strftime("%H:%M:%S")
+    temperature = ""
+
+    latitude = "4.624335"
+    longitude = "-74.063644"
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
+    api_key = os.environ["OPENWEATHER_API_KEY"]
+    query_string = f"appid={api_key}&q=bogota&units=metric"
+    url = f"{base_url}?{query_string}"
+    temperature = requests.get(url).json()["main"]["temp"]
+
+    response = {
+        "city": "Bogotá",
+        "date": date_string,
+        "time": time_string,
+        "month": month_name,
+        "day": day_name,
+        "temperature": temperature,
+    }
 
     return jsonify(response)
 
