@@ -1,8 +1,10 @@
 import datetime
+from pathlib import Path
 import os
 
 import requests
 import dotenv
+from flask_sqlalchemy import SQLAlchemy
 
 from flask import Flask
 from flask import request
@@ -13,8 +15,48 @@ from flask import url_for
 from flask import abort
 from flask import render_template
 
+
+# Load environment variables
 dotenv.load_dotenv()
+
+# Paths
+base_dir = Path(__file__).resolve().parent
+database_path = base_dir / "db" / "fwd.db"
+
+# Database
+db = SQLAlchemy()
+
+# Flask application
 app = Flask(__name__)
+
+# Database
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path.as_posix()}"
+db.init_app(app)
+
+# Database Models
+class Role(db.Model):
+    __tablename__ = "roles"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    users = db.relationship("User", backref="role")
+
+    def __repr__(self) -> str:
+        return self.name
+
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
+
+    def __repr__(self) -> str:
+        return self.username
+
+
+# Create database tables
+with app.app_context():
+    db.create_all()
+
 
 @app.route("/")
 def index():

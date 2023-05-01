@@ -21,3 +21,7 @@ request-redirect-with-httpie:
 
 request-redirect-follow-with-httpie:
 	http --follow http://localhost:5000/redirect
+
+
+shell:
+	flask --app main.py shell
