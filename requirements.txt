@@ -2,6 +2,7 @@
 Flask==2.3.1
 httpie==3.2.1
 python-dotenv==1.0.0
+flask-sqlalchemy==3.0.3
 
 # local
 ipython==8.13.1
