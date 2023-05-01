@@ -1,3 +1,7 @@
+# base
 Flask==2.3.1
 httpie==3.2.1
 python-dotenv==1.0.0
+
+# local
+ipython==8.13.1

@@ -11,6 +11,7 @@ from flask import make_response
 from flask import redirect
 from flask import url_for
 from flask import abort
+from flask import render_template
 
 dotenv.load_dotenv()
 app = Flask(__name__)
@@ -140,6 +141,18 @@ def abort_execution():
     abort(404)
     print("After abort")
     return "Execution not aborted", 200
+
+@app.route("/profile")
+def profile():
+    """Display profile in a template."""
+    template_name_or_list = "profile/profile.html"
+    context = {
+        "name": "Miguel de Icaza"
+    }
+    return render_template(
+        template_name_or_list,
+        **context
+    )
 
 def main():
     """Run the flask application if the main module is invoked directly."""
