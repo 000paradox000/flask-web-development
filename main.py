@@ -5,6 +5,7 @@ import os
 import requests
 import dotenv
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from flask import Flask
 from flask import request
@@ -57,6 +58,7 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
+migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
